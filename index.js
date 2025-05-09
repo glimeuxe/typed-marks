@@ -1,12 +1,14 @@
+// index.js
+import {getApp} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
 import {getFirestore, collection, getDocs, enableIndexedDbPersistence} from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 
-const app = firebase.app();
+const app = getApp();
 const db = getFirestore(app);
 
 enableIndexedDbPersistence(db).catch((err) => {
-  if (err.code === 'failed-precondition' || err.code === 'unimplemented') {
-    console.warn('Persistence error:', err.code);
-  }
+	if (err.code === 'failed-precondition' || err.code === 'unimplemented') {
+		console.warn('Persistence error:', err.code);
+	}
 });
 
 window.onload = () => {
@@ -17,42 +19,36 @@ window.onload = () => {
 	input.focus();
 
 	setInterval(() => {
-		const active = document.activeElement;
-		if (active !== input) input.focus();
+		if (document.activeElement !== input) input.focus();
 	}, 1);
 
 	input.addEventListener("keydown", async (e) => {
 		if (e.key === "Enter") {
-			await searchUrls();
-			const links = document.querySelectorAll("#results a");
-			if (links.length > 0) {
-				window.open(links[0].href, '_blank');
-			}
+		await searchUrls();
+		const links = document.querySelectorAll("#results a");
+		if (links.length) window.open(links[0].href, '_blank');
 		}
 	});
 
 	document.addEventListener("keydown", (e) => {
 		const isMac = navigator.platform.toUpperCase().includes("MAC");
-		const isCtrlL = (!isMac && e.ctrlKey && e.key === "l");
-		const isCmdL = (isMac && e.metaKey && e.key === "l");
-		if (isCtrlL || isCmdL) {
-			e.preventDefault();
-			input.focus();
+		if ((e.ctrlKey && !isMac || e.metaKey && isMac) && e.key === "l") {
+		e.preventDefault();
+		input.focus();
 		}
 	});
-};
+	};
 
-async function searchUrls() {
+	async function searchUrls() {
 	const q = document.getElementById("search").value.toLowerCase();
 	const resultsList = document.getElementById("results");
-	const bookmarksRef = collection(db, "bookmarks");
-	const snapshot = await getDocs(bookmarksRef);
-	const filtered = [];
+	const snapshot = await getDocs(collection(db, "bookmarks"));
 
+	const filtered = [];
 	snapshot.forEach(doc => {
 		const { url, name = "" } = doc.data();
 		if (url.toLowerCase().includes(q) || name.toLowerCase().includes(q)) {
-			filtered.push([url, name]);
+		filtered.push([url, name]);
 		}
 	});
 
