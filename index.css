@@ -1,0 +1,53 @@
+/* index.css */
+@import url("https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap");
+
+html, body {
+	background-color: #F5F5F5;
+	box-sizing: border-box;
+	font-size: 10px;
+	margin: 0;
+	overflow-x: hidden;
+	padding: 0;
+	user-select: none;
+}
+
+a, a:link, a:visited {
+	color: cornflowerblue;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+div#wrapper {
+	margin: 8rem;
+}
+
+input#search {
+	background: transparent;
+	border: none;
+	caret-color: grey;
+	font-family: "Host Grotesk";
+	font-size: 4rem;
+	font-weight: 600;
+	margin-bottom: 4rem;
+	width: 80rem;
+}
+
+input#search:focus {
+	outline: none;
+}
+
+ul#results {
+	font-family: "Host Grotesk";
+	font-size: 1rem;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 80rem;
+}
+
+ul#results li {
+	padding: 0;
+}
